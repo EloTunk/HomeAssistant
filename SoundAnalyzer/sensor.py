@@ -7,8 +7,7 @@ from homeassistant.components.sensor import (
     SensorEntity,
     SensorStateClass,
 )
-from homeassistant.const import UnitOfSound
-from homeassistant.core import HomeAssistant, callback
+from homeassistant.core import HomeAssistant
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
 
@@ -48,7 +47,7 @@ class SoundLevelSensor(CoordinatorEntity, SensorEntity):
     """Representation of a Netatmo sound level sensor."""
 
     _attr_state_class = SensorStateClass.MEASUREMENT
-    _attr_native_unit_of_measurement = UnitOfSound.DECIBEL
+    _attr_native_unit_of_measurement = "dB"
 
     def __init__(
         self,
