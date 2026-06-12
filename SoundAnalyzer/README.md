@@ -27,7 +27,7 @@ A HomeAssistant integration that monitors Netatmo soundsensor devices and provid
 4. Select category: **Integration**
 5. Search for "Sound Analyzer" and install
 6. Restart HomeAssistant
-7. Go to Settings → Devices & Services → Create Integration
+7. Go to Settings → Devices & Services → Add Integration
 8. Add the Sound Analyzer integration
 
 ### Manual Installation
@@ -37,7 +37,7 @@ A HomeAssistant integration that monitors Netatmo soundsensor devices and provid
   /config/custom_components/sound_analyzer/
    ```
 2. Restart HomeAssistant
-3. Go to Settings → Devices & Services → Create Automation
+3. Go to Settings → Devices & Services → Add Integration
 4. Add the Sound Analyzer integration
 
 ## Configuration
