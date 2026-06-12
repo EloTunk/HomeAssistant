@@ -8,7 +8,7 @@ from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import Platform
 from homeassistant.core import HomeAssistant
 
-from .const import DOMAIN, SCAN_INTERVAL, CONF_SOUND_THRESHOLD, DEFAULT_SOUND_THRESHOLD
+from .const import DOMAIN, SCAN_INTERVAL, CONF_QUIET_THRESHOLD, CONF_NOISY_THRESHOLD, CONF_SENSOR_THRESHOLDS, DEFAULT_QUIET_THRESHOLD, DEFAULT_NOISY_THRESHOLD
 from .coordinator import SoundAnalyzerCoordinator
 
 _LOGGER = logging.getLogger(__name__)
@@ -116,8 +116,14 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
 
         hass.data[DOMAIN][entry.entry_id] = {
             "coordinator": coordinator,
-            "sound_threshold": entry.options.get(
-                CONF_SOUND_THRESHOLD, DEFAULT_SOUND_THRESHOLD
+            CONF_QUIET_THRESHOLD: entry.options.get(
+                CONF_QUIET_THRESHOLD, DEFAULT_QUIET_THRESHOLD
+            ),
+            CONF_NOISY_THRESHOLD: entry.options.get(
+                CONF_NOISY_THRESHOLD, DEFAULT_NOISY_THRESHOLD
+            ),
+            CONF_SENSOR_THRESHOLDS: entry.options.get(
+                CONF_SENSOR_THRESHOLDS, {}
             ),
         }
 

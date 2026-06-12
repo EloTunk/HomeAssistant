@@ -3,15 +3,36 @@
     "step": {
       "user": {
         "title": "Sound Analyzer Configuration",
-        "description": "Configure the Sound Analyzer integration",
+        "description": "Configure default thresholds for sound detection",
         "data": {
-          "sound_threshold": "Sound Threshold (dB)"
+          "quiet_threshold": "Quiet Threshold (dB)",
+          "noisy_threshold": "Noisy Threshold (dB)"
+        },
+        "data_description": {
+          "quiet_threshold": "Alert when sound level drops below this (e.g., 25 dB for quiet)",
+          "noisy_threshold": "Alert when sound level exceeds this (e.g., 50 dB for noisy)"
         }
       }
     },
     "error": {
       "no_netatmo": "Netatmo integration not found. Please set up Netatmo first.",
       "invalid_threshold": "Invalid threshold value"
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Sound Analyzer Options",
+        "description": "Adjust sound detection thresholds",
+        "data": {
+          "quiet_threshold": "Quiet Threshold (dB)",
+          "noisy_threshold": "Noisy Threshold (dB)"
+        },
+        "data_description": {
+          "quiet_threshold": "Alert when sound level drops below this (e.g., 25 dB for quiet)",
+          "noisy_threshold": "Alert when sound level exceeds this (e.g., 50 dB for noisy)"
+        }
+      }
     }
   },
   "services": {

@@ -11,7 +11,7 @@ from homeassistant.core import HomeAssistant
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
 
-from .const import DOMAIN
+from .const import DOMAIN, CONF_QUIET_THRESHOLD, CONF_NOISY_THRESHOLD, CONF_SENSOR_THRESHOLDS, DEFAULT_QUIET_THRESHOLD, DEFAULT_NOISY_THRESHOLD
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -100,16 +100,30 @@ class SoundLevelSensor(CoordinatorEntity, SensorEntity):
 
         data = self.coordinator.data[self.device_name]
         
-        # Get threshold from config
-        threshold = self.hass.data[DOMAIN][self._entry_id].get(
-            "sound_threshold", 40
+        # Get per-sensor thresholds if available, otherwise use global
+        entry_data = self.hass.data[DOMAIN][self._entry_id]
+        sensor_thresholds = entry_data.get(CONF_SENSOR_THRESHOLDS, {})
+        sensor_config = sensor_thresholds.get(self.device_name, {})
+        
+        quiet_threshold = sensor_config.get(
+            CONF_QUIET_THRESHOLD,
+            entry_data.get(CONF_QUIET_THRESHOLD, DEFAULT_QUIET_THRESHOLD),
+        )
+        noisy_threshold = sensor_config.get(
+            CONF_NOISY_THRESHOLD,
+            entry_data.get(CONF_NOISY_THRESHOLD, DEFAULT_NOISY_THRESHOLD),
         )
         
-        below_threshold = data.get("sound_level", 0) < threshold
+        sound_level = data.get("sound_level", 0)
+        below_quiet = sound_level < quiet_threshold
+        above_noisy = sound_level > noisy_threshold
 
         return {
             "home_name": data.get("home_name"),
             "device_id": data.get("device_id"),
-            "sound_threshold": threshold,
-            "below_threshold": below_threshold,
+            "quiet_threshold": quiet_threshold,
+            "noisy_threshold": noisy_threshold,
+            "below_quiet": below_quiet,
+            "above_noisy": above_noisy,
+            "alert": "Quiet" if below_quiet else ("Noisy" if above_noisy else "Normal"),
         }
