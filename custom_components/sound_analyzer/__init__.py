@@ -93,20 +93,12 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
         True if setup was successful
     """
     try:
-        # Get Netatmo account from hass data (should be set up by user)
-        if "netatmo" not in hass.data:
-            _LOGGER.error(
-                "Netatmo integration not found. Please set up Netatmo first."
-            )
-            return False
-
         netatmo_account = _find_netatmo_account_from_hass(hass)
         if not netatmo_account:
-            _LOGGER.error(
-                "Netatmo account not available in Home Assistant data. "
-                "Reload Netatmo integration and restart Home Assistant."
+            _LOGGER.warning(
+                "Netatmo account object not found; falling back to Home Assistant "
+                "sensor states for sound data."
             )
-            return False
 
         # Create coordinator
         coordinator = SoundAnalyzerCoordinator(

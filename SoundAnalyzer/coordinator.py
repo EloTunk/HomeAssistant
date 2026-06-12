@@ -59,24 +59,84 @@ class SoundAnalyzerCoordinator(DataUpdateCoordinator):
             "Unsupported Netatmo account object: no update method available"
         )
 
+    @staticmethod
+    def _iter_items(container: Any):
+        """Yield objects from list/tuple/set or dict values."""
+        if container is None:
+            return []
+        if isinstance(container, dict):
+            return container.values()
+        if isinstance(container, (list, tuple, set)):
+            return container
+        return []
+
+    def _read_sound_data_from_states(self) -> dict[str, Any]:
+        """Read Netatmo sound sensors directly from Home Assistant states."""
+        sound_data: dict[str, Any] = {}
+
+        for state in self.hass.states.async_all("sensor"):
+            attrs = state.attributes
+            device_class = attrs.get("device_class")
+            unit = attrs.get("unit_of_measurement")
+            attribution = str(attrs.get("attribution", ""))
+
+            if device_class != "sound_pressure":
+                continue
+
+            if unit != "dB":
+                continue
+
+            # Limit to Netatmo-provided sensors to avoid unrelated noise sensors.
+            if "netatmo" not in attribution.lower() and not state.entity_id.startswith(
+                "sensor.netatmo"
+            ):
+                continue
+
+            try:
+                sound_level = float(state.state)
+            except (TypeError, ValueError):
+                continue
+
+            display_name = attrs.get("friendly_name", state.entity_id)
+            sound_data[display_name] = {
+                "sound_level": sound_level,
+                "device_id": state.entity_id,
+                "home_name": attrs.get("home_name", "Netatmo"),
+            }
+
+        return sound_data
+
     async def _async_update_data(self) -> dict[str, Any]:
         """Fetch sound sensor data from Netatmo."""
         try:
-            # Get all home data from Netatmo
-            await self._async_refresh_account()
+            # Preferred path: use already-available HA entity states.
+            sound_data = self._read_sound_data_from_states()
+            if sound_data:
+                return sound_data
 
-            sound_data = {}
+            # Fallback path: use pyatmo account runtime data when available.
+            if self.netatmo_account is not None:
+                await self._async_refresh_account()
 
-            # Extract sound sensor data from homes
-            for home in self.netatmo_account.homes:
-                for module in home.modules:
-                    # Check if module has sound sensor capability
-                    if hasattr(module, "sound") and module.sound is not None:
-                        sound_data[module.name] = {
-                            "sound_level": module.sound,
-                            "device_id": module.entity_id,
-                            "home_name": home.name,
-                        }
+                for home in self._iter_items(
+                    getattr(self.netatmo_account, "homes", None)
+                ):
+                    for module in self._iter_items(getattr(home, "modules", None)):
+                        if hasattr(module, "sound") and module.sound is not None:
+                            module_name = getattr(
+                                module,
+                                "name",
+                                getattr(module, "id", "unknown_module"),
+                            )
+                            sound_data[module_name] = {
+                                "sound_level": module.sound,
+                                "device_id": getattr(
+                                    module,
+                                    "entity_id",
+                                    getattr(module, "id", module_name),
+                                ),
+                                "home_name": getattr(home, "name", "Unknown Home"),
+                            }
 
             return sound_data
 
