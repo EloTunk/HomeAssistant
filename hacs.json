@@ -3,5 +3,5 @@
   "homeassistant": "2023.6.0",
   "content_in_root": false,
   "zip_release": false,
-  "render_readme": false
+  "render_readme": true
 }
