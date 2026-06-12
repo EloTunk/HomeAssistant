@@ -28,9 +28,6 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
         True if setup was successful
     """
     try:
-        # Import pyatmo here to check if it's available
-        from pyatmo import Account
-
         # Get Netatmo account from hass data (should be set up by user)
         if "netatmo" not in hass.data:
             _LOGGER.error(
@@ -72,11 +69,8 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
 
         return True
 
-    except ImportError:
-        _LOGGER.error("pyatmo library not installed")
-        return False
     except Exception as err:
-        _LOGGER.error("Error setting up Sound Analyzer: %s", err)
+        _LOGGER.exception("Error setting up Sound Analyzer: %s", err)
         return False
 
 
