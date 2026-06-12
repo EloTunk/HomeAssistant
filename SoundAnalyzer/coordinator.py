@@ -1,5 +1,6 @@
 """DataUpdateCoordinator for Sound Analyzer integration."""
 
+import inspect
 import logging
 from datetime import timedelta
 from typing import Any
@@ -34,13 +35,35 @@ class SoundAnalyzerCoordinator(DataUpdateCoordinator):
         )
         self.netatmo_account = netatmo_account
 
+    async def _async_refresh_account(self) -> None:
+        """Refresh account data for both sync and async pyatmo variants."""
+        if callable(getattr(self.netatmo_account, "update", None)):
+            await self.hass.async_add_executor_job(self.netatmo_account.update)
+            return
+
+        if callable(getattr(self.netatmo_account, "async_update", None)):
+            result = self.netatmo_account.async_update()
+            if inspect.isawaitable(result):
+                await result
+            return
+
+        if callable(
+            getattr(self.netatmo_account, "async_update_topology", None)
+        ):
+            result = self.netatmo_account.async_update_topology()
+            if inspect.isawaitable(result):
+                await result
+            return
+
+        raise UpdateFailed(
+            "Unsupported Netatmo account object: no update method available"
+        )
+
     async def _async_update_data(self) -> dict[str, Any]:
         """Fetch sound sensor data from Netatmo."""
         try:
             # Get all home data from Netatmo
-            await self.hass.async_add_executor_job(
-                self.netatmo_account.update
-            )
+            await self._async_refresh_account()
 
             sound_data = {}
 

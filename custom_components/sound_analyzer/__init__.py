@@ -18,9 +18,17 @@ PLATFORMS = [Platform.SENSOR]
 
 def _looks_like_netatmo_account(candidate: Any) -> bool:
     """Return True if object behaves like a Netatmo account."""
-    return hasattr(candidate, "homes") and callable(
-        getattr(candidate, "update", None)
+    if candidate is None:
+        return False
+
+    has_homes = hasattr(candidate, "homes")
+    has_update = callable(getattr(candidate, "update", None))
+    has_async_update = callable(getattr(candidate, "async_update", None))
+    has_async_topology = callable(
+        getattr(candidate, "async_update_topology", None)
     )
+
+    return has_homes and (has_update or has_async_update or has_async_topology)
 
 
 def _find_netatmo_account(domain_data: Any) -> Any | None:
@@ -49,8 +57,27 @@ def _find_netatmo_account(domain_data: Any) -> Any | None:
         if account_attr is not None:
             stack.append(account_attr)
 
+        if hasattr(item, "__dict__"):
+            stack.extend(vars(item).values())
+
         if isinstance(item, (list, tuple, set)):
             stack.extend(item)
+
+    return None
+
+
+def _find_netatmo_account_from_hass(hass: HomeAssistant) -> Any | None:
+    """Find Netatmo account object from Home Assistant runtime state."""
+    if "netatmo" in hass.data:
+        account = _find_netatmo_account(hass.data["netatmo"])
+        if account is not None:
+            return account
+
+    for netatmo_entry in hass.config_entries.async_entries("netatmo"):
+        runtime_data = getattr(netatmo_entry, "runtime_data", None)
+        account = _find_netatmo_account(runtime_data)
+        if account is not None:
+            return account
 
     return None
 
@@ -73,7 +100,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
             )
             return False
 
-        netatmo_account = _find_netatmo_account(hass.data["netatmo"])
+        netatmo_account = _find_netatmo_account_from_hass(hass)
         if not netatmo_account:
             _LOGGER.error(
                 "Netatmo account not available in Home Assistant data. "
