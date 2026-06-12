@@ -1,0 +1,12 @@
+{
+  "manifest_version": 1,
+  "domain": "sound_analyzer",
+  "name": "Sound Analyzer",
+  "codeowners": ["@EloTunk"],
+  "config_flow": true,
+  "documentation": "https://www.home-assistant.io/",
+  "requirements": ["pyatmo>=8.0.0"],
+  "version": "1.0.0",
+  "integration_type": "service",
+  "iot_class": "cloud_polling"
+}

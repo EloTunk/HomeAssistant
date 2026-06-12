@@ -1,0 +1,29 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Sound Analyzer Configuration",
+        "description": "Configure the Sound Analyzer integration",
+        "data": {
+          "sound_threshold": "Sound Threshold (dB)"
+        }
+      }
+    },
+    "error": {
+      "no_netatmo": "Netatmo integration not found. Please set up Netatmo first.",
+      "invalid_threshold": "Invalid threshold value"
+    }
+  },
+  "services": {
+    "set_sound_threshold": {
+      "name": "Set Sound Threshold",
+      "description": "Set the sound level threshold for alerts",
+      "fields": {
+        "threshold": {
+          "name": "Threshold",
+          "description": "Sound level threshold in dB"
+        }
+      }
+    }
+  }
+}

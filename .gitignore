@@ -272,6 +272,9 @@ Temporary Items
 
 # json files
 *.json
+!hacs.json
+!custom_components/sound_analyzer/manifest.json
+!custom_components/sound_analyzer/strings.json
 
 # log-files
 *.log
