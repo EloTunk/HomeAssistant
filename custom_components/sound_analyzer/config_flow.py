@@ -33,7 +33,7 @@ class SoundAnalyzerConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
                 await self.async_set_unique_id(DOMAIN)
                 self._abort_if_unique_id_configured()
                 return self.async_create_entry(
-                    title="Sound Analyzer",
+                    title="SoundAnalyzer for Netatmo",
                     data={},
                     options={
                         CONF_QUIET_THRESHOLD: user_input[CONF_QUIET_THRESHOLD],

@@ -2,7 +2,7 @@
   "config": {
     "step": {
       "user": {
-        "title": "Sound Analyzer Configuration",
+        "title": "SoundAnalyzer for Netatmo Configuration",
         "description": "Configure default thresholds for sound detection",
         "data": {
           "quiet_threshold": "Quiet Threshold (dB)",
