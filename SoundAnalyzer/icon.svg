@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" role="img" aria-label="Sound Analyzer icon">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0f4c5c" />
+      <stop offset="100%" stop-color="#1f8a70" />
+    </linearGradient>
+    <linearGradient id="wave" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#ffd166" />
+      <stop offset="100%" stop-color="#ff8c42" />
+    </linearGradient>
+  </defs>
+
+  <rect x="12" y="12" width="232" height="232" rx="52" fill="url(#bg)" />
+
+  <path
+    d="M78 160v-28m24 40V112m24 52V96m24 40v-20m24 32V108"
+    fill="none"
+    stroke="url(#wave)"
+    stroke-width="12"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  />
+
+  <circle cx="128" cy="72" r="10" fill="#e8f7ff" />
+  <path
+    d="M104 72a24 24 0 0 1 48 0"
+    fill="none"
+    stroke="#e8f7ff"
+    stroke-width="8"
+    stroke-linecap="round"
+  />
+</svg>
