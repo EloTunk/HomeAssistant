@@ -7,7 +7,6 @@ from typing import Any
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import Platform
 from homeassistant.core import HomeAssistant
-from homeassistant.helpers.discovery import async_load_platform
 
 from .const import DOMAIN, SCAN_INTERVAL, CONF_SOUND_THRESHOLD, DEFAULT_SOUND_THRESHOLD
 from .coordinator import SoundAnalyzerCoordinator
@@ -15,6 +14,45 @@ from .coordinator import SoundAnalyzerCoordinator
 _LOGGER = logging.getLogger(__name__)
 
 PLATFORMS = [Platform.SENSOR]
+
+
+def _looks_like_netatmo_account(candidate: Any) -> bool:
+    """Return True if object behaves like a Netatmo account."""
+    return hasattr(candidate, "homes") and callable(
+        getattr(candidate, "update", None)
+    )
+
+
+def _find_netatmo_account(domain_data: Any) -> Any | None:
+    """Search domain data recursively for a Netatmo account object."""
+    stack = [domain_data]
+    seen_ids: set[int] = set()
+
+    while stack:
+        item = stack.pop()
+        item_id = id(item)
+        if item_id in seen_ids:
+            continue
+        seen_ids.add(item_id)
+
+        if _looks_like_netatmo_account(item):
+            return item
+
+        if isinstance(item, dict):
+            direct_account = item.get("account")
+            if _looks_like_netatmo_account(direct_account):
+                return direct_account
+            stack.extend(item.values())
+            continue
+
+        account_attr = getattr(item, "account", None)
+        if account_attr is not None:
+            stack.append(account_attr)
+
+        if isinstance(item, (list, tuple, set)):
+            stack.extend(item)
+
+    return None
 
 
 async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
@@ -35,9 +73,12 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
             )
             return False
 
-        netatmo_account = hass.data["netatmo"].get("account")
+        netatmo_account = _find_netatmo_account(hass.data["netatmo"])
         if not netatmo_account:
-            _LOGGER.error("Netatmo account not available")
+            _LOGGER.error(
+                "Netatmo account not available in Home Assistant data. "
+                "Reload Netatmo integration and restart Home Assistant."
+            )
             return False
 
         # Create coordinator
