@@ -19,11 +19,11 @@ A HomeAssistant integration that monitors Netatmo soundsensor devices and provid
 
 ### Via HACS (Recommended)
 
-[![Open your Home Assistant instance and open a repository inside the Home Assistant Community Store.](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/hacs_repository/?owner=EloTunk&repository=EloTunk&category=integration)
+[![Open your Home Assistant instance and open a repository inside the Home Assistant Community Store.](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/hacs_repository/?owner=EloTunk&repository=HomeAssistant&category=integration)
 
 1. Click the HACS button above, or:
 2. Go to HACS → Integrations → ⋯ → Custom repositories
-3. Add: `https://github.com/EloTunk/EloTunk`
+3. Add: `https://github.com/EloTunk/HomeAssistant`
 4. Select category: **Integration**
 5. Search for "Sound Analyzer" and install
 6. Restart HomeAssistant
@@ -32,9 +32,9 @@ A HomeAssistant integration that monitors Netatmo soundsensor devices and provid
 
 ### Manual Installation
 
-1. Place the `SoundAnalyzer` folder in your `custom_components` directory:
+1. Place the `sound_analyzer` folder in your `custom_components` directory:
    ```
-   /config/custom_components/sound_analyzer/
+  /config/custom_components/sound_analyzer/
    ```
 2. Restart HomeAssistant
 3. Go to Settings → Devices & Services → Create Automation
