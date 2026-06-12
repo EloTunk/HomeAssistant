@@ -1,4 +1,4 @@
-"""Constants for the Sound Analyzer integration."""
+"""Constants for the SoundAnalyzer for Netatmo integration."""
 
 DOMAIN = "sound_analyzer"
 SCAN_INTERVAL = 60  # seconds

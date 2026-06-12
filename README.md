@@ -1,4 +1,4 @@
-# Sound Analyzer for Home Assistant
+# SoundAnalyzer for Netatmo
 
 Custom Home Assistant integration that monitors Netatmo sound sensors and provides threshold-based alerts.
 
@@ -8,14 +8,14 @@ Custom Home Assistant integration that monitors Netatmo sound sensors and provid
 2. Go to Integrations -> menu -> Custom repositories.
 3. Add repository URL: `https://github.com/EloTunk/HomeAssistant`
 4. Category: Integration
-5. Install Sound Analyzer.
+5. Install SoundAnalyzer for Netatmo.
 6. Restart Home Assistant.
 
 ## Setup
 
 1. Go to Settings -> Devices & Services.
 2. Click Add Integration.
-3. Search for Sound Analyzer.
+3. Search for SoundAnalyzer for Netatmo.
 4. Complete the configuration flow.
 
 ## Requirements

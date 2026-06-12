@@ -22,7 +22,7 @@
   "options": {
     "step": {
       "init": {
-        "title": "Sound Analyzer Options",
+        "title": "SoundAnalyzer for Netatmo Options",
         "description": "Adjust sound detection thresholds",
         "data": {
           "quiet_threshold": "Quiet Threshold (dB)",

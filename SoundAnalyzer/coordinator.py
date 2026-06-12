@@ -1,4 +1,4 @@
-"""DataUpdateCoordinator for Sound Analyzer integration."""
+"""DataUpdateCoordinator for SoundAnalyzer for Netatmo integration."""
 
 import inspect
 import logging
@@ -30,7 +30,7 @@ class SoundAnalyzerCoordinator(DataUpdateCoordinator):
         super().__init__(
             hass,
             _LOGGER,
-            name="Sound Analyzer",
+            name="SoundAnalyzer for Netatmo",
             update_interval=update_interval,
         )
         self.netatmo_account = netatmo_account

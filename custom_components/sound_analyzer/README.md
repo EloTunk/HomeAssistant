@@ -1,4 +1,4 @@
-# Sound Analyzer Integration
+# SoundAnalyzer for Netatmo Integration
 
 A HomeAssistant integration that monitors Netatmo soundsensor devices and provides threshold-based alerts.
 
@@ -25,10 +25,10 @@ A HomeAssistant integration that monitors Netatmo soundsensor devices and provid
 2. Go to HACS → Integrations → ⋯ → Custom repositories
 3. Add: `https://github.com/EloTunk/HomeAssistant`
 4. Select category: **Integration**
-5. Search for "Sound Analyzer" and install
+5. Search for "SoundAnalyzer for Netatmo" and install
 6. Restart HomeAssistant
 7. Go to Settings → Devices & Services → Add Integration
-8. Add the Sound Analyzer integration
+8. Add the SoundAnalyzer for Netatmo integration
 
 ### Manual Installation
 
@@ -38,7 +38,7 @@ A HomeAssistant integration that monitors Netatmo soundsensor devices and provid
    ```
 2. Restart HomeAssistant
 3. Go to Settings → Devices & Services → Add Integration
-4. Add the Sound Analyzer integration
+4. Add the SoundAnalyzer for Netatmo integration
 
 ## Configuration
 

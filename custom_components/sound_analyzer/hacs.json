@@ -1,5 +1,5 @@
 {
-  "name": "Sound Analyzer",
+  "name": "SoundAnalyzer for Netatmo",
   "homeassistant": "2023.6.0",
   "documentation": "https://github.com/EloTunk/HomeAssistant/tree/main/SoundAnalyzer",
   "issues": "https://github.com/EloTunk/HomeAssistant/issues",

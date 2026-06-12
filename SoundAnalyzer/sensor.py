@@ -1,4 +1,4 @@
-"""Sound sensor entities for Sound Analyzer integration."""
+"""Sound sensor entities for SoundAnalyzer for Netatmo integration."""
 
 import logging
 from typing import Any

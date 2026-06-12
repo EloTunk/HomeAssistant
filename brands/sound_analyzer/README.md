@@ -1,4 +1,4 @@
-# Sound Analyzer Brand Assets
+# SoundAnalyzer for Netatmo Brand Assets
 
 This folder keeps source artwork for Home Assistant brands submission.
 

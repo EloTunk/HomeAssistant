@@ -1,4 +1,4 @@
-"""Config flow for Sound Analyzer integration."""
+"""Config flow for SoundAnalyzer for Netatmo integration."""
 
 from __future__ import annotations
 
@@ -18,7 +18,7 @@ from .const import (
 
 
 class SoundAnalyzerConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
-    """Handle a config flow for Sound Analyzer."""
+    """Handle a config flow for SoundAnalyzer for Netatmo."""
 
     VERSION = 1
 
@@ -73,7 +73,7 @@ class SoundAnalyzerConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
 
 
 class SoundAnalyzerOptionsFlow(config_entries.OptionsFlow):
-    """Handle options for Sound Analyzer."""
+    """Handle options for SoundAnalyzer for Netatmo."""
 
     def __init__(self, config_entry):
         """Initialize options flow."""

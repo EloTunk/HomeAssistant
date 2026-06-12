@@ -1,4 +1,4 @@
-"""Sound Analyzer integration for HomeAssistant."""
+"""SoundAnalyzer for Netatmo integration for HomeAssistant."""
 
 import logging
 from datetime import timedelta
@@ -83,7 +83,7 @@ def _find_netatmo_account_from_hass(hass: HomeAssistant) -> Any | None:
 
 
 async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
-    """Set up Sound Analyzer integration.
+    """Set up SoundAnalyzer for Netatmo integration.
     
     Args:
         hass: HomeAssistant instance
@@ -136,12 +136,12 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
         return True
 
     except Exception as err:
-        _LOGGER.exception("Error setting up Sound Analyzer: %s", err)
+        _LOGGER.exception("Error setting up SoundAnalyzer for Netatmo: %s", err)
         return False
 
 
 async def async_unload_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
-    """Unload Sound Analyzer integration.
+    """Unload SoundAnalyzer for Netatmo integration.
     
     Args:
         hass: HomeAssistant instance
