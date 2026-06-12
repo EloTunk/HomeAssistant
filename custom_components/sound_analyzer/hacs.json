@@ -1,7 +1,7 @@
 {
   "name": "Sound Analyzer",
   "homeassistant": "2023.6.0",
-  "documentation": "https://github.com/EloTunk/EloTunk/tree/main/HomeAssistant/SoundAnalyzer",
-  "issues": "https://github.com/EloTunk/EloTunk/issues",
+  "documentation": "https://github.com/EloTunk/HomeAssistant/tree/main/SoundAnalyzer",
+  "issues": "https://github.com/EloTunk/HomeAssistant/issues",
   "requirements": ["pyatmo>=8.0.0"]
 }

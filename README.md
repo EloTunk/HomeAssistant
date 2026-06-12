@@ -34,3 +34,18 @@ Custom Home Assistant integration that monitors Netatmo sound sensors and provid
 For full usage examples, automations, and troubleshooting, see:
 
 - `SoundAnalyzer/README.md`
+
+## Branding
+
+Branding files prepared for HACS/Home Assistant deployment:
+
+- `custom_components/sound_analyzer/icon.png`
+- `custom_components/sound_analyzer/logo.png`
+- `brands/sound_analyzer/icon.svg`
+- `brands/sound_analyzer/logo.svg`
+
+Regenerate PNG files from SVG with:
+
+```bash
+bash brands/sound_analyzer/export_png.sh
+```

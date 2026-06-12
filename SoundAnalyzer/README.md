@@ -111,7 +111,8 @@ For each Netatmo soundsensor device, the integration creates:
 
 1. Verify Netatmo integration is configured
 2. Check HomeAssistant logs for errors
-3. Ensure pyatmo library is installed: `pip install pyatmo>=8.0.0`
+3. Restart HomeAssistant after install/update so dependencies are installed
+4. Confirm `requirements` in `manifest.json` includes `pyatmo>=8.0.0`
 
 ### No Sound Sensors Found
 
@@ -131,6 +132,21 @@ The integration uses:
 - `DataUpdateCoordinator` for efficient data fetching
 - `SensorEntity` for sensor representation
 - Service-based configuration for runtime adjustments
+
+## Branding Assets
+
+Branding sources and exported files are available in this repository:
+
+- `brands/sound_analyzer/icon.svg`
+- `brands/sound_analyzer/logo.svg`
+- `brands/sound_analyzer/icon.png`
+- `brands/sound_analyzer/logo.png`
+
+To regenerate PNG files from SVG, run:
+
+```bash
+bash brands/sound_analyzer/export_png.sh
+```
 
 ## License
 
