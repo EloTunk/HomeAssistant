@@ -1,5 +1,6 @@
 """SoundAnalyzer for Netatmo integration for HomeAssistant."""
 
+import asyncio
 import logging
 from datetime import timedelta
 from typing import Any
@@ -8,7 +9,17 @@ from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import Platform
 from homeassistant.core import HomeAssistant
 
-from .const import DOMAIN, SCAN_INTERVAL, CONF_QUIET_THRESHOLD, CONF_NOISY_THRESHOLD, CONF_SENSOR_THRESHOLDS, DEFAULT_QUIET_THRESHOLD, DEFAULT_NOISY_THRESHOLD
+from .const import (
+    DOMAIN,
+    SCAN_INTERVAL,
+    CONF_QUIET_THRESHOLD,
+    CONF_NOISY_THRESHOLD,
+    CONF_SENSOR_THRESHOLDS,
+    DEFAULT_QUIET_THRESHOLD,
+    DEFAULT_NOISY_THRESHOLD,
+    CONF_PREFER_HA_STATES,
+    DEFAULT_PREFER_HA_STATES,
+)
 from .coordinator import SoundAnalyzerCoordinator
 
 _LOGGER = logging.getLogger(__name__)
@@ -100,20 +111,31 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
                 "sensor states for sound data."
             )
 
+        # Ensure integration shared data (lock, last_update) exists before
+        # creating coordinators so they can use the shared update lock.
+        if DOMAIN not in hass.data:
+            hass.data[DOMAIN] = {}
+
+        shared = hass.data[DOMAIN].setdefault("_shared", {})
+        if "update_lock" not in shared:
+            shared["update_lock"] = asyncio.Lock()
+        if "last_update" not in shared:
+            shared["last_update"] = 0.0
+
         # Create coordinator
         coordinator = SoundAnalyzerCoordinator(
             hass,
             netatmo_account,
             timedelta(seconds=SCAN_INTERVAL),
+            prefer_ha_states=entry.options.get(
+                CONF_PREFER_HA_STATES, DEFAULT_PREFER_HA_STATES
+            ),
         )
 
         # Initial refresh
         await coordinator.async_config_entry_first_refresh()
 
-        # Store data
-        if DOMAIN not in hass.data:
-            hass.data[DOMAIN] = {}
-
+        # Store data per config entry
         hass.data[DOMAIN][entry.entry_id] = {
             "coordinator": coordinator,
             CONF_QUIET_THRESHOLD: entry.options.get(
@@ -124,6 +146,9 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
             ),
             CONF_SENSOR_THRESHOLDS: entry.options.get(
                 CONF_SENSOR_THRESHOLDS, {}
+            ),
+            CONF_PREFER_HA_STATES: entry.options.get(
+                CONF_PREFER_HA_STATES, DEFAULT_PREFER_HA_STATES
             ),
         }
 

@@ -16,3 +16,9 @@ DEFAULT_NOISY_THRESHOLD = 50  # dB - noisy environment
 
 # Service names
 SERVICE_SET_THRESHOLD = "set_sound_threshold"
+
+# Behaviour flags
+CONF_PREFER_HA_STATES = "prefer_ha_states"
+
+# Defaults
+DEFAULT_PREFER_HA_STATES = True

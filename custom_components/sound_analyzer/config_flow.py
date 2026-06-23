@@ -39,6 +39,8 @@ class SoundAnalyzerConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
                         CONF_QUIET_THRESHOLD: user_input[CONF_QUIET_THRESHOLD],
                         CONF_NOISY_THRESHOLD: user_input[CONF_NOISY_THRESHOLD],
                         CONF_SENSOR_THRESHOLDS: {},
+                        # New option: prefer Home Assistant sensor states
+                        "prefer_ha_states": user_input.get("prefer_ha_states", True),
                     },
                 )
 
@@ -52,6 +54,7 @@ class SoundAnalyzerConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
                     CONF_NOISY_THRESHOLD,
                     default=DEFAULT_NOISY_THRESHOLD,
                 ): vol.All(vol.Coerce(int), vol.Range(min=0, max=120)),
+                vol.Optional("prefer_ha_states", default=True): bool,
             }
         )
 
@@ -84,6 +87,7 @@ class SoundAnalyzerOptionsFlow(config_entries.OptionsFlow):
         if user_input is not None:
             self._global_quiet = user_input[CONF_QUIET_THRESHOLD]
             self._global_noisy = user_input[CONF_NOISY_THRESHOLD]
+            self._prefer_states = user_input.get("prefer_ha_states", True)
             return await self.async_step_sensors()
 
         current_quiet = self._config_entry.options.get(
@@ -105,6 +109,12 @@ class SoundAnalyzerOptionsFlow(config_entries.OptionsFlow):
                     CONF_NOISY_THRESHOLD,
                     default=current_noisy,
                 ): vol.All(vol.Coerce(int), vol.Range(min=0, max=120)),
+                vol.Optional(
+                    "prefer_ha_states",
+                    default=self._config_entry.options.get(
+                        "prefer_ha_states", True
+                    ),
+                ): bool,
             }
         )
 
@@ -140,6 +150,7 @@ class SoundAnalyzerOptionsFlow(config_entries.OptionsFlow):
                     CONF_QUIET_THRESHOLD: self._global_quiet,
                     CONF_NOISY_THRESHOLD: self._global_noisy,
                     CONF_SENSOR_THRESHOLDS: sensor_thresholds,
+                    "prefer_ha_states": getattr(self, "_prefer_states", True),
                 },
             )
 

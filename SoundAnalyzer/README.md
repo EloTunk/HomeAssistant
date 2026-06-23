@@ -133,6 +133,14 @@ The integration uses:
 - `SensorEntity` for sensor representation
 - Service-based configuration for runtime adjustments
 
+## Changelog
+
+- **v1.0.1** — 2026-06-23: Added diagnostic logging and a shared update lock
+  to coordinate `pyatmo` account updates, and a `prefer_ha_states` option
+  (default: true) to prefer Home Assistant sensor states and avoid direct
+  `pyatmo` calls. These changes improve stability when the Netatmo UI or
+  other Netatmo consumers are active.
+
 ## Branding Assets
 
 Branding sources and exported files are available in this repository:
