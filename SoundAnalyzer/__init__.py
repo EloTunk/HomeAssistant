@@ -3,6 +3,7 @@
 import asyncio
 import logging
 from datetime import timedelta
+from types import ModuleType
 from typing import Any
 
 from homeassistant.config_entries import ConfigEntry
@@ -53,6 +54,11 @@ def _find_netatmo_account(domain_data: Any) -> Any | None:
         if item_id in seen_ids:
             continue
         seen_ids.add(item_id)
+
+        # Modules (e.g. six's lazy tkinter import) are never the account; touching
+        # their attributes can trigger imports that fail.
+        if isinstance(item, ModuleType):
+            continue
 
         if _looks_like_netatmo_account(item):
             return item

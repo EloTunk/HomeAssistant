@@ -1,0 +1,170 @@
+Home Assistant wall panel
+
+# Glanceable, calm, and colour that means something.
+
+The design language behind a custom Home Assistant dashboard for a landscape iPad and phones. Every specimen on this page is built from the same tokens the dashboard uses, so it follows your light or dark setting the way the panel follows the sun.
+
+**6,9kW**
+
+SolarProducing
+
+**378W**
+
+Home
+
+**0W**
+
+GridIdle
+
+**38%**
+
+BatteryCharging
+
+Solar**14,8kWh**
+
+Used**26,8kWh**
+
+Export**0kWh**
+
+Principles
+
+## Six rules every screen follows
+
+### Glanceable first
+
+One big number per card, a small dim label under it. Readable in a second while walking past.
+
+### Calm by default
+
+Nothing shouts unless something needs you. Alerts appear only when they matter and clear themselves.
+
+### Colour means something
+
+Each thing keeps one colour everywhere. Things glow only while they are active.
+
+### Forgiving touch
+
+Targets are at least 44 px, usually 56–70 px. Risky actions ask for a second tap.
+
+### Summary, then sheet
+
+The home screen summarises. Tapping a card opens a large rounded sheet with the controls.
+
+### Two themes, both real
+
+Dark and light switch at sunset and sunrise. Motion is slow, subtle and respects reduced motion.
+
+Colour
+
+## A colour per role, never decoration
+
+Values shown are dark / light. Soft fills are the same colour at about 14% opacity, as on the chips in each swatch.
+
+**Solar · attention**Producing, due, warnings`#fbbf24 / #b7770c`
+
+**Battery · OK**Charging, locked, good`#34d399 / #0f8a5f`
+
+**Home · cooling**Load, climate, casting`#38bdf8 / #1683c7`
+
+**Grid**Import and export`#94a3b8 / #64748b`
+
+**EV**Car and charger`#2dd4bf / #0d8f86`
+
+**Accent**Selection, music, brand`#8d7bff / #6354b9`
+
+**Heat**Geyser, heating`#ff8c1a / #c2571a`
+
+**Act now**Door open, grid down`#ff5d7a / #c53757`
+
+Dark ground #080b11 Light ground #eef3f8 Text #eef2f7 / #152633 Dim #8d96a8 / #4f6170
+
+People get their own colour too (violet, teal, pink, orange), shown as coloured initials that fade when someone is away.
+
+Type
+
+## Unbounded for numbers, Plus Jakarta Sans for words
+
+10:45*Clock · Unbounded 500 · −0.05em*
+
+84%*Hero number · Unbounded 500*
+
+Home Climate*Title · Unbounded 600*
+
+Living Room*Item · Jakarta 700 · 16px*
+
+TV on · 2 lights*Status · Jakarta 600 · dim*
+
+Home energy*Label · 800 · caps · +0.08em*
+
+Components
+
+## The pieces, live
+
+Cards use a 26 px radius, tiles 16–22 px, buttons 14–16 px, and chips are fully round. Dark cards are translucent with a hairline border and a frosted blur; light cards are white with a soft shadow.
+
+Quick actions *tap a tile*
+
+Status and alerts *calm until needed*
+
+All systems normal Battery at reserve Garage door open
+
+Who's home: coloured when in, faded when away
+
+Room tile *glows while lit*
+
+**Kitchen**24° · 2 lights
+
+**Living Room**TV on
+
+Task from the calendar *glows until ticked*
+
+**28**SEP
+
+**Insurance mileage**To do today
+
+Segmented choice *charge stop*
+
+Sheet header *every pop-up opens the same way*
+
+### Geyser
+
+**Heating**· 2,9 kW · off at 18:30
+
+Layout
+
+## One screen, three columns, no scrolling
+
+Built for an 11" iPad in landscape (1194 × 834). On phones the same cards stack into one column and sheets open full screen.
+
+Greeting · dateWho's home · weather · status · theme · **10:45**
+
+Energy flow
+
+Quick actions · 8 tiles
+
+Calendar
+
+Weather
+
+Rooms · swipeable pages of 6
+
+Car · Music
+
+- **Spacing:** 14–16 px padding inside cards, 10–14 px gaps between them.
+- **Icons:** simple line icons, 2 px stroke, round caps. Only weather icons are coloured.
+- **Background:** a soft "house mood" glow behind the cards: gold on solar, teal on battery, grey in rain, red in outages.
+- **Motion:** slow and meaningful: flowing dots on live power, a halo while something runs, nothing idle.
+- **Night:** after 22:00 the screensaver dims, and content drifts a little to protect the screen.
+- **Pop-ups:** never interrupted by updates. The page reloads itself only when no sheet is open.
+
+Recreate it
+
+## A prompt you can hand to an AI
+
+```
+Build a Home Assistant wall dashboard for a landscape tablet.
+Design rules: glanceable first (one big number per card in Unbounded 500, small dim labels in Plus Jakarta Sans), calm by default (alerts only when needed; amber = attention, red = act now), colour with meaning (solar #fbbf24, battery #34d399, home #38bdf8, grid #94a3b8, EV #2dd4bf; glow only while active), 26 px rounded cards with translucent frosted backgrounds, 56–70 px touch targets, a second tap for risky actions, detail in large rounded pop-up sheets.
+Dark (#080b11) and light (#eef3f8) themes are both first-class and switch at sunrise and sunset. Subtle motion only, and respect reduced motion.
+```
+
+Made with Home Assistant and Claude Opus 5.5. The dashboard is a single self-contained HTML page served from Home Assistant's /local/ folder, talking to Home Assistant over its WebSocket API.

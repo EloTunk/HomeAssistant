@@ -1,0 +1,45 @@
+<!doctype html>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Wall Dashboard preview</title>
+<style>html,body{margin:0;height:100%;background:#080b11}</style>
+<!-- Open this file in a browser to preview the panel with fake data (no Home Assistant needed). -->
+<script type="module">
+import "./wall-dashboard.js";
+const st = (state, attributes = {}) => ({ state, attributes });
+const states = {
+  "sun.sun": st("below_horizon", { next_rising: new Date(Date.now() + 9 * 36e5).toISOString() }),
+  "sensor.evcc_home_power": st("1840", { unit_of_measurement: "W" }),
+  "sensor.p1_meter_power": st("1910", { unit_of_measurement: "W" }),
+  "sensor.zag143440_charge_power": st("0", { unit_of_measurement: "W" }),
+  "switch.zag143440_charging": st("off"),
+  "lock.front_door": st("unlocked"),
+  "binary_sensor.front_door_door": st("on"),
+  "light.stalampe1": st("on"), "light.stalampe2": st("on"), "light.tvlys": st("off"),
+  "light.radiolys": st("off"), "light.blomsterlys": st("on"),
+  "light.tak1": st("off"), "light.tak2": st("off"), "light.tak3": st("off"), "light.tak4": st("off"),
+  "light.vinduslys_2": st("on"), "light.vinduslys_3": st("on"),
+  "light.mathea_1": st("off"), "switch.utekontakt": st("on"), "switch.cavius": st("off"),
+  "sensor.ute_id_7_battery_level": st("64", { unit_of_measurement: "%" }),
+  "sensor.ute_id_7_odometer": st("18342", { unit_of_measurement: "km" }),
+  "sensor.evcc_hjemmelader_vehicle_range": st("312", { unit_of_measurement: "km" }),
+  "binary_sensor.ute_id_7_currently_charging": st("off"),
+  "sensor.ute_id_7_charging_status": st("not_charging"),
+};
+const hass = {
+  states,
+  callService: (d, s, data) => {
+    console.log("callService", d, s, data);
+    const ids = [].concat(data.entity_id);
+    ids.forEach((id) => {
+      const on = s === "turn_on" ? "on" : s === "turn_off" ? "off" : s === "lock" ? "locked" : s === "unlock" ? "unlocked" : null;
+      if (on && states[id]) states[id] = st(on);
+    });
+    el.hass = { ...hass };
+  },
+  callWS: async (m) => { if (m.type.startsWith("config/")) throw new Error("mock"); return {}; },
+};
+const el = document.createElement("wall-dashboard");
+document.body.append(el);
+el.panel = { config: {} };
+el.hass = hass;
+</script>

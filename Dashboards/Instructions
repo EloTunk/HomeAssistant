@@ -1,0 +1,3 @@
+Build a Home Assistant wall dashboard for a landscape tablet.
+Design rules: glanceable first (one big number per card in Unbounded 500, small dim labels in Plus Jakarta Sans), calm by default (alerts only when needed; amber = attention, red = act now), colour with meaning (solar #fbbf24, battery #34d399, home #38bdf8, grid #94a3b8, EV #2dd4bf; glow only while active), 26 px rounded cards with translucent frosted backgrounds, 56–70 px touch targets, a second tap for risky actions, detail in large rounded pop-up sheets.
+Dark (#080b11) and light (#eef3f8) themes are both first-class and switch at sunrise and sunset. Subtle motion only, and respect reduced motion.
