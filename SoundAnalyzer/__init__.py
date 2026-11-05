@@ -30,56 +30,35 @@ PLATFORMS = [Platform.SENSOR]
 
 def _looks_like_netatmo_account(candidate: Any) -> bool:
     """Return True if object behaves like a Netatmo account."""
-    if candidate is None:
+    if candidate is None or isinstance(candidate, ModuleType):
+        return False
+    try:
+        return hasattr(candidate, "homes") and any(
+            callable(getattr(candidate, n, None))
+            for n in ("update", "async_update", "async_update_topology")
+        )
+    except Exception:  # noqa: BLE001 - foreign objects may raise anything on getattr
         return False
 
-    has_homes = hasattr(candidate, "homes")
-    has_update = callable(getattr(candidate, "update", None))
-    has_async_update = callable(getattr(candidate, "async_update", None))
-    has_async_topology = callable(
-        getattr(candidate, "async_update_topology", None)
-    )
 
-    return has_homes and (has_update or has_async_update or has_async_topology)
-
-
-def _find_netatmo_account(domain_data: Any) -> Any | None:
-    """Search domain data recursively for a Netatmo account object."""
-    stack = [domain_data]
-    seen_ids: set[int] = set()
-
-    while stack:
-        item = stack.pop()
-        item_id = id(item)
-        if item_id in seen_ids:
-            continue
-        seen_ids.add(item_id)
-
-        # Modules (e.g. six's lazy tkinter import) are never the account; touching
-        # their attributes can trigger imports that fail.
-        if isinstance(item, ModuleType):
-            continue
-
-        if _looks_like_netatmo_account(item):
-            return item
-
-        if isinstance(item, dict):
-            direct_account = item.get("account")
-            if _looks_like_netatmo_account(direct_account):
-                return direct_account
-            stack.extend(item.values())
-            continue
-
-        account_attr = getattr(item, "account", None)
-        if account_attr is not None:
-            stack.append(account_attr)
-
-        if hasattr(item, "__dict__"):
-            stack.extend(vars(item).values())
-
-        if isinstance(item, (list, tuple, set)):
-            stack.extend(item)
-
+def _find_netatmo_account(root: Any, depth: int = 3) -> Any | None:
+    """Look for the account via known paths only (never walk arbitrary objects)."""
+    if root is None or depth < 0:
+        return None
+    if _looks_like_netatmo_account(root):
+        return root
+    if isinstance(root, dict):
+        children = list(root.values())
+    else:
+        # shortcut: only known Netatmo attribute names, add more if Netatmo renames them
+        try:
+            children = [getattr(root, n, None) for n in ("account", "data_handler")]
+        except Exception:  # noqa: BLE001 - foreign objects may raise anything
+            return None
+    for child in children:
+        found = _find_netatmo_account(child, depth - 1)
+        if found is not None:
+            return found
     return None
 
 
